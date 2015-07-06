@@ -1,15 +1,18 @@
-var _ = require('lodash'),
-    Promise = require('bluebird'),
-    fs = require('fs'),
-    stat = Promise.promisify(fs.stat),
-    readFile = Promise.promisify(fs.readFile),
-    writeFile = Promise.promisify(fs.writeFile),
-    path = require('path'),
-    mkdirp = Promise.promisify(require('mkdirp')),
-    Writer = require('broccoli-writer'),
-    helpers = require('broccoli-kitchen-sink-helpers'),
-    jsStringEscape = require('js-string-escape'),
-    recursiveReaddir = Promise.promisify(require('recursive-readdir'));
+'use strict';
+
+var _ = require('lodash');
+var fs = require('fs');
+var path = require('path');
+var Writer = require('broccoli-writer');
+var helpers = require('broccoli-kitchen-sink-helpers');
+var Promise = require('bluebird');
+var jsStringEscape = require('js-string-escape');
+var recursiveReaddir = Promise.promisify(require('recursive-readdir'));
+
+var stat = Promise.promisify(fs.stat);
+var mkdirp = Promise.promisify(require('mkdirp'));
+var readFile = Promise.promisify(fs.readFile);
+var writeFile = Promise.promisify(fs.writeFile);
 
 module.exports = BillyBuilder;
 
@@ -170,8 +173,8 @@ BillyBuilder.prototype.write = function(readTree, destDir) {
             .sort(function(a, b) {
                 return a.name.localeCompare(b.name);
             })
-            .reduce(function(contents, item, index) {
-                return contents + "bbDefine('"+item.name+"', function(module, exports, require) {\n"+item.contents+"\n});\n\n";
+            .reduce(function(contents, item) {
+                return contents + 'bbDefine("'+item.name+'", function(module, exports, require) {\n'+item.contents+'\n});\n\n';
             }, '');
         if (self.injectHelpers) {
             contents = self.helpersJs + '\n\n' + contents;
