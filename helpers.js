@@ -1,6 +1,8 @@
 var bbRequire, bbDefine;
 
 (function() {
+    'use strict';
+
     var entries = {},
         modules = {};
 
